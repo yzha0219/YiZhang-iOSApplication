@@ -7,31 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4641A54923094DBD00007E7D /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A54823094DBD00007E7D /* MapViewController.swift */; };
-		4641A5522309909F00007E7D /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4641A5502309909F00007E7D /* Model.xcdatamodeld */; };
-		4641A5622309970F00007E7D /* Annotation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A5602309970F00007E7D /* Annotation+CoreDataClass.swift */; };
-		4641A5632309970F00007E7D /* Annotation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A5612309970F00007E7D /* Annotation+CoreDataProperties.swift */; };
-		4641A5652309973D00007E7D /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A5642309973D00007E7D /* DatabaseProtocol.swift */; };
+		461D66CA23194F7100FB1659 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66C923194F7100FB1659 /* CoreDataController.swift */; };
+		461D66CC231964FE00FB1659 /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66CB231964FE00FB1659 /* MulticastDelegate.swift */; };
+		461D66DD231A05F500FB1659 /* AddLocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66DC231A05F500FB1659 /* AddLocationDelegate.swift */; };
+		461D66DF231A197D00FB1659 /* LocationDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66DE231A197D00FB1659 /* LocationDetailViewController.swift */; };
+		461D66E6231A3A4300FB1659 /* Location+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66E4231A3A4200FB1659 /* Location+CoreDataClass.swift */; };
+		461D66E7231A3A4300FB1659 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66E5231A3A4300FB1659 /* Location+CoreDataProperties.swift */; };
+		461D66EB231A96DA00FB1659 /* NewLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66EA231A96DA00FB1659 /* NewLocationViewController.swift */; };
+		461D66ED231A98F800FB1659 /* LocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66EC231A98F800FB1659 /* LocationAnnotation.swift */; };
+		4641A54923094DBD00007E7D /* MapViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A54823094DBD00007E7D /* MapViewController2.swift */; };
+		46721A612319422100216768 /* LocationAnnotation.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 46721A5F2319422100216768 /* LocationAnnotation.xcdatamodeld */; };
+		46721A672319451000216768 /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46721A662319451000216768 /* DatabaseProtocol.swift */; };
 		46E38FBF23043180004F4BD0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E38FBE23043180004F4BD0 /* AppDelegate.swift */; };
 		46E38FC423043180004F4BD0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46E38FC223043180004F4BD0 /* Main.storyboard */; };
-		46E38FC723043180004F4BD0 /* YiZhang_iOSApplication.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 46E38FC523043180004F4BD0 /* YiZhang_iOSApplication.xcdatamodeld */; };
 		46E38FC923043180004F4BD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46E38FC823043180004F4BD0 /* Assets.xcassets */; };
 		46E38FCC23043180004F4BD0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46E38FCA23043180004F4BD0 /* LaunchScreen.storyboard */; };
+		46F99411231563420037DD8C /* AllLocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F99410231563420037DD8C /* AllLocationTableViewController.swift */; };
+		46F994132315637C0037DD8C /* CreateAnnotationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F994122315637C0037DD8C /* CreateAnnotationViewController.swift */; };
+		46F99417231565940037DD8C /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F99416231565940037DD8C /* LocationTableViewCell.swift */; };
+		46F9941B231570750037DD8C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F9941A231570750037DD8C /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4641A54823094DBD00007E7D /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		4641A5512309909F00007E7D /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		4641A5602309970F00007E7D /* Annotation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Annotation+CoreDataClass.swift"; sourceTree = "<group>"; };
-		4641A5612309970F00007E7D /* Annotation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Annotation+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		4641A5642309973D00007E7D /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
+		461D66C923194F7100FB1659 /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
+		461D66CB231964FE00FB1659 /* MulticastDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
+		461D66DC231A05F500FB1659 /* AddLocationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationDelegate.swift; sourceTree = "<group>"; };
+		461D66DE231A197D00FB1659 /* LocationDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailViewController.swift; sourceTree = "<group>"; };
+		461D66E4231A3A4200FB1659 /* Location+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataClass.swift"; sourceTree = "<group>"; };
+		461D66E5231A3A4300FB1659 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		461D66EA231A96DA00FB1659 /* NewLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLocationViewController.swift; sourceTree = "<group>"; };
+		461D66EC231A98F800FB1659 /* LocationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAnnotation.swift; sourceTree = "<group>"; };
+		4641A54823094DBD00007E7D /* MapViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController2.swift; sourceTree = "<group>"; };
+		46721A602319422100216768 /* LocationAnnotation.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationAnnotation.xcdatamodel; sourceTree = "<group>"; };
+		46721A662319451000216768 /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
 		46E38FBB23043180004F4BD0 /* YiZhang-iOSApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "YiZhang-iOSApplication.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		46E38FBE23043180004F4BD0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46E38FC323043180004F4BD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		46E38FC623043180004F4BD0 /* YiZhang_iOSApplication.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = YiZhang_iOSApplication.xcdatamodel; sourceTree = "<group>"; };
 		46E38FC823043180004F4BD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		46E38FCB23043180004F4BD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		46E38FCD23043180004F4BD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46F99410231563420037DD8C /* AllLocationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLocationTableViewController.swift; sourceTree = "<group>"; };
+		46F994122315637C0037DD8C /* CreateAnnotationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAnnotationViewController.swift; sourceTree = "<group>"; };
+		46F99416231565940037DD8C /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
+		46F9941A231570750037DD8C /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,19 +66,21 @@
 		4641A54F2309907A00007E7D /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				4641A5602309970F00007E7D /* Annotation+CoreDataClass.swift */,
-				4641A5612309970F00007E7D /* Annotation+CoreDataProperties.swift */,
-				4641A5502309909F00007E7D /* Model.xcdatamodeld */,
+				461D66E4231A3A4200FB1659 /* Location+CoreDataClass.swift */,
+				461D66E5231A3A4300FB1659 /* Location+CoreDataProperties.swift */,
+				46721A5F2319422100216768 /* LocationAnnotation.xcdatamodeld */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
 		};
-		4641A55F230996DC00007E7D /* DataBase */ = {
+		4641A55F230996DC00007E7D /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				4641A5642309973D00007E7D /* DatabaseProtocol.swift */,
+				46721A662319451000216768 /* DatabaseProtocol.swift */,
+				461D66C923194F7100FB1659 /* CoreDataController.swift */,
+				461D66CB231964FE00FB1659 /* MulticastDelegate.swift */,
 			);
-			path = DataBase;
+			path = Database;
 			sourceTree = "<group>";
 		};
 		46E38FB223043180004F4BD0 = {
@@ -82,15 +102,22 @@
 		46E38FBD23043180004F4BD0 /* YiZhang-iOSApplication */ = {
 			isa = PBXGroup;
 			children = (
-				4641A55F230996DC00007E7D /* DataBase */,
+				4641A55F230996DC00007E7D /* Database */,
 				4641A54F2309907A00007E7D /* DataModel */,
 				46E38FBE23043180004F4BD0 /* AppDelegate.swift */,
 				46E38FC223043180004F4BD0 /* Main.storyboard */,
 				46E38FC823043180004F4BD0 /* Assets.xcassets */,
 				46E38FCA23043180004F4BD0 /* LaunchScreen.storyboard */,
 				46E38FCD23043180004F4BD0 /* Info.plist */,
-				46E38FC523043180004F4BD0 /* YiZhang_iOSApplication.xcdatamodeld */,
-				4641A54823094DBD00007E7D /* MapViewController.swift */,
+				4641A54823094DBD00007E7D /* MapViewController2.swift */,
+				46F99410231563420037DD8C /* AllLocationTableViewController.swift */,
+				46F994122315637C0037DD8C /* CreateAnnotationViewController.swift */,
+				46F9941A231570750037DD8C /* MapViewController.swift */,
+				46F99416231565940037DD8C /* LocationTableViewCell.swift */,
+				461D66DC231A05F500FB1659 /* AddLocationDelegate.swift */,
+				461D66DE231A197D00FB1659 /* LocationDetailViewController.swift */,
+				461D66EA231A96DA00FB1659 /* NewLocationViewController.swift */,
+				461D66EC231A98F800FB1659 /* LocationAnnotation.swift */,
 			);
 			path = "YiZhang-iOSApplication";
 			sourceTree = "<group>";
@@ -166,13 +193,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				461D66E6231A3A4300FB1659 /* Location+CoreDataClass.swift in Sources */,
+				46F99417231565940037DD8C /* LocationTableViewCell.swift in Sources */,
 				46E38FBF23043180004F4BD0 /* AppDelegate.swift in Sources */,
-				4641A54923094DBD00007E7D /* MapViewController.swift in Sources */,
-				4641A5622309970F00007E7D /* Annotation+CoreDataClass.swift in Sources */,
-				46E38FC723043180004F4BD0 /* YiZhang_iOSApplication.xcdatamodeld in Sources */,
-				4641A5632309970F00007E7D /* Annotation+CoreDataProperties.swift in Sources */,
-				4641A5522309909F00007E7D /* Model.xcdatamodeld in Sources */,
-				4641A5652309973D00007E7D /* DatabaseProtocol.swift in Sources */,
+				461D66EB231A96DA00FB1659 /* NewLocationViewController.swift in Sources */,
+				461D66DD231A05F500FB1659 /* AddLocationDelegate.swift in Sources */,
+				46721A672319451000216768 /* DatabaseProtocol.swift in Sources */,
+				46F994132315637C0037DD8C /* CreateAnnotationViewController.swift in Sources */,
+				461D66ED231A98F800FB1659 /* LocationAnnotation.swift in Sources */,
+				4641A54923094DBD00007E7D /* MapViewController2.swift in Sources */,
+				461D66CA23194F7100FB1659 /* CoreDataController.swift in Sources */,
+				461D66E7231A3A4300FB1659 /* Location+CoreDataProperties.swift in Sources */,
+				46F99411231563420037DD8C /* AllLocationTableViewController.swift in Sources */,
+				46F9941B231570750037DD8C /* MapViewController.swift in Sources */,
+				46721A612319422100216768 /* LocationAnnotation.xcdatamodeld in Sources */,
+				461D66DF231A197D00FB1659 /* LocationDetailViewController.swift in Sources */,
+				461D66CC231964FE00FB1659 /* MulticastDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,23 +410,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		4641A5502309909F00007E7D /* Model.xcdatamodeld */ = {
+		46721A5F2319422100216768 /* LocationAnnotation.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				4641A5512309909F00007E7D /* Model.xcdatamodel */,
+				46721A602319422100216768 /* LocationAnnotation.xcdatamodel */,
 			);
-			currentVersion = 4641A5512309909F00007E7D /* Model.xcdatamodel */;
-			path = Model.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		46E38FC523043180004F4BD0 /* YiZhang_iOSApplication.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				46E38FC623043180004F4BD0 /* YiZhang_iOSApplication.xcdatamodel */,
-			);
-			currentVersion = 46E38FC623043180004F4BD0 /* YiZhang_iOSApplication.xcdatamodel */;
-			path = YiZhang_iOSApplication.xcdatamodeld;
+			currentVersion = 46721A602319422100216768 /* LocationAnnotation.xcdatamodel */;
+			path = LocationAnnotation.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

@@ -1,29 +1,26 @@
 //
-//  MapViewController.swift
+//  NewLocationViewController.swift
 //  YiZhang-iOSApplication
 //
-//  Created by Yi Zhang on 28/8/19.
+//  Created by Yi Zhang on 31/8/19.
 //  Copyright © 2019 Yi Zhang. All rights reserved.
 //
 
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+protocol NewLocationDelegate {
+    func locationAnnotationAdded(annotation: LocationAnnotation)
+}
 
-    @IBOutlet weak var mapView: MKMapView!
-    
+class NewLocationViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
-    func focusOn(annotation: MKAnnotation){
-        mapView.selectAnnotation(annotation,animated:true)
-        let zoomRegion = MKCoordinateRegion(center: annotation.coordinate,latitudinalMeters: 1000,longitudinalMeters: 1000)
-        mapView.setRegion(mapView.regionThatFits(zoomRegion), animated: true)
-    }
 
     /*
     // MARK: - Navigation
