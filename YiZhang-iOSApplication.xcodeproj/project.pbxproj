@@ -102,6 +102,7 @@
 		46E38FBD23043180004F4BD0 /* YiZhang-iOSApplication */ = {
 			isa = PBXGroup;
 			children = (
+				46FD5711231CEDE900235EA7 /* New Group */,
 				4641A55F230996DC00007E7D /* Database */,
 				4641A54F2309907A00007E7D /* DataModel */,
 				46E38FBE23043180004F4BD0 /* AppDelegate.swift */,
@@ -120,6 +121,13 @@
 				461D66EC231A98F800FB1659 /* LocationAnnotation.swift */,
 			);
 			path = "YiZhang-iOSApplication";
+			sourceTree = "<group>";
+		};
+		46FD5711231CEDE900235EA7 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

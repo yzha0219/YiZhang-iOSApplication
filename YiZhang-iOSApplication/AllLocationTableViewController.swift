@@ -43,6 +43,23 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
         definesPresentationContext = true
     }
     
+    
+    @IBAction func sortOption(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            //ascending
+            filteredLocation = filteredLocation.sorted(by: { (item1, item2) -> Bool in
+                return item1.name!.lowercased().compare(item2.name!.lowercased()) == ComparisonResult.orderedAscending
+            })
+        }
+        else {
+            //descending
+            filteredLocation = filteredLocation.sorted(by: { (item1, item2) -> Bool in
+                return item1.name!.lowercased().compare(item2.name!.lowercased()) == ComparisonResult.orderedDescending
+            })
+        }
+        tableView.reloadData()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         databaseController?.addListener(listener: self)
@@ -96,7 +113,7 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
             
             annotationCell.nameLabel.text = annotation.name
             annotationCell.descLabel.text = annotation.desc
-            annotationCell.photo.image = UIImage(data: annotation.photo! as Data)
+            annotationCell.icon.image = UIImage(data: annotation.icon! as Data)
             
             return annotationCell
         }
@@ -126,7 +143,7 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
             lat = location.coordinate.latitude
             long = location.coordinate.longitude
         }
-        let locationAnnotation = LocationAnnotation(title: title,subtitle: subtitle,lat: long,long: lat)
+        let locationAnnotation = LocationAnnotation(title: title,subtitle: subtitle,lat: lat,long: long)
         mapViewController?.focusOn(annotation: locationAnnotation as MKAnnotation)
     }
     
