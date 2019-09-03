@@ -7,6 +7,11 @@
 //
 
 import Foundation
+import MapKit
 protocol AddLocationDelegate {
     func addLocation(location: Location) -> Bool
+}
+
+protocol MapFocusDelegate: AnyObject {
+    func focusOn(annotation: MKAnnotation)
 }

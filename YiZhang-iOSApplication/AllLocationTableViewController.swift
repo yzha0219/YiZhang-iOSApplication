@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 import CoreLocation
 
 class AllLocationTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener {
@@ -20,11 +21,15 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
     var allLocation: [Location] = []
     var filteredLocation: [Location] = []
     var locationDelegate: AddLocationDelegate?
+    var coreDataController : CoreDataController?
+    weak var mapfocusDelegate: MapFocusDelegate?
     weak var databaseController: DatabaseProtocol?
     var mapViewController: MapViewController?
+    //var managedObjectContext: NSManagedObjectContext?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -32,8 +37,10 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        //managedObjectContext = appDelegate.persistentContainer.viewContext
         databaseController = appDelegate.databaseController
-        
+        allLocation = coreDataController!.fetchAllLocation()
+        filteredLocation = allLocation
         let searchController = UISearchController(searchResultsController: nil);
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -107,17 +114,17 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        allLocation = coreDataController!.fetchAllLocation()
         if indexPath.section == SECTION_LOCATIONS {
             let annotationCell = tableView.dequeueReusableCell(withIdentifier: CELL_LOCATION, for: indexPath) as! LocationTableViewCell
             let annotation = filteredLocation[indexPath.row]
-            
             annotationCell.nameLabel.text = annotation.name
             annotationCell.descLabel.text = annotation.desc
-            annotationCell.icon.image = UIImage(data: annotation.icon! as Data)
+            let icon = UIImage(named: annotation.icon!)
+            annotationCell.icon.image = icon
             
             return annotationCell
         }
-        
         let countCell = tableView.dequeueReusableCell(withIdentifier: CELL_COUNT, for: indexPath)
         countCell.textLabel?.text = "\(allLocation.count) location annotations in the database"
         countCell.selectionStyle = .none
@@ -125,48 +132,62 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedLocation = self.filteredLocation[indexPath.row]
-        let title = selectedLocation.name!
-        let subtitle = selectedLocation.desc!
-        let addresss: String = selectedLocation.address!
-        let geoCoder = CLGeocoder()
-        var lat: Double = 0.0
-        var long: Double = 0.0
-        geoCoder.geocodeAddressString(addresss) {(placemarks, error) in
-            guard
-                let placemark = placemarks?.first,
-                let location = placemark.location
-                else {
-                    self.displayMessage(title: "Error", message: "The address is invalid!")
-                    return
-                }
-            lat = location.coordinate.latitude
-            long = location.coordinate.longitude
+        if indexPath.section == SECTION_LOCATIONS{
+            let selectedLocation = self.filteredLocation[indexPath.row]
+            let title = selectedLocation.name!
+        //let subtitle = selectedLocation.desc!
+        //let addresss: String = selectedLocation.address!
+        //let geoCoder = CLGeocoder()
+            let lat: Double = selectedLocation.latitude
+            let long: Double = selectedLocation.longtitude
+        //geoCoder.geocodeAddressString(addresss) {(placemarks, error) in
+        //    guard
+        //        let placemark = placemarks?.first,
+        //        let location = placemark.location
+        //        else {
+        //            self.displayMessage(title: "Error", message: "The address is invalid!")
+        //            return
+        //        }
+        //    lat = location.coordinate.latitude
+        //    long = location.coordinate.longitude
+        //}
+            let locationAnnotation = LocationAnnotation(title: title,lat: lat,long: long)
+            mapfocusDelegate!.focusOn(annotation: locationAnnotation as MKAnnotation)
+            navigationController?.popViewController(animated: true)
         }
-        let locationAnnotation = LocationAnnotation(title: title,subtitle: subtitle,lat: lat,long: long)
-        mapViewController?.focusOn(annotation: locationAnnotation as MKAnnotation)
+        return
     }
     
 
-    /*
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
-        return true
+        if indexPath.section == SECTION_LOCATIONS {
+            return true
+        }
+        return false
     }
-    */
+    
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+        if editingStyle == .delete && indexPath.section == SECTION_LOCATIONS {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
+            let location = filteredLocation[indexPath.row]
+            //coreDataController!.removeLocation(location: location)
+            //tableView.deleteRows(at: [indexPath], with: .fade)
+            coreDataController!.removeLocation(location: location)
+            filteredLocation.remove(at: indexPath.row)
+            mapViewController!.viewDidLoad()
+        }
+        //else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        //}
+        tableView.reloadData()
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.
@@ -190,13 +211,6 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if segue.identifier == "LocationDetailSegue" {
-            let controller = segue.destination as! LocationDetailViewController
-            
-            let selectedIndexPath = tableView.indexPathsForSelectedRows?.first
-            
-            controller.location = allLocation[selectedIndexPath!.row]
-        }
     }
     
 

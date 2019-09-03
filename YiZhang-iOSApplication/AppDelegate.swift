@@ -15,16 +15,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var databaseController: DatabaseProtocol?
+    //var persistantContainer: NSPersistentContainer?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        databaseController = CoreDataController()
-        let splitView = self.window!.rootViewController as! UISplitViewController
-        let navigationController = splitView.viewControllers.first as! UINavigationController
-        let mapView = splitView.viewControllers.last as! MapViewController
-        let locationView = navigationController.viewControllers.first as! AllLocationTableViewController
         
-        locationView.mapViewController = mapView
+        /*
+        databaseController = CoreDataController()
+        
+        persistantContainer = NSPersistentContainer(name: "LocationAnnotation")
+        
+        persistantContainer?.loadPersistentStores() { (description, error) in
+            if let error = error {
+                fatalError("Failed to load Core Data stack: \(error)")
+            }
+        }
+ */
         return true
     }
 
@@ -54,6 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Core Data stack
 
+    
     lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
@@ -61,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
         */
-        let container = NSPersistentContainer(name: "YiZhang_iOSApplication")
+        let container = NSPersistentContainer(name: "LocationAnnotation")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
@@ -82,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     // MARK: - Core Data Saving support
-
+    
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -96,6 +103,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
 }
 

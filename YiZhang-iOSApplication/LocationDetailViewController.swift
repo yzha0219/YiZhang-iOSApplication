@@ -10,11 +10,12 @@ import UIKit
 
 class LocationDetailViewController: UIViewController {
 
-    var location: Location?
+    var location: LocationAnnotation?
     
-    @IBOutlet weak var nameTextField: UITextField!
+    
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var descTextView: UITextView!
-    @IBOutlet weak var locationTextField: UITextField!
+    @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var photo: UIImageView!
     @IBOutlet weak var icon: UIImageView!
     
@@ -23,19 +24,14 @@ class LocationDetailViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         if location != nil {
-            nameTextField.text = location!.name
+            nameLabel.text = location!.title
             descTextView.text = location!.desc
-            locationTextField.text = location!.address
-            photo.image = UIImage(data: location!.photo! as Data)
-            icon.image = UIImage(data: location!.icon! as Data)
+            locationLabel.text = location!.address
+            photo.image = UIImage(named: location!.photo!)
+            icon.image = UIImage(named: location!.icon!)
         }
     }
     
-    @IBAction func takePhoto(_ sender: Any) {
-    }
-    
-    @IBAction func takeIcon(_ sender: Any) {
-    }
     
 
     /*
