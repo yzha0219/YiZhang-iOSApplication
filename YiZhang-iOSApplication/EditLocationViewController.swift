@@ -1,8 +1,8 @@
 //
-//  AddLocationViewController.swift
+//  EditLocationViewController.swift
 //  YiZhang-iOSApplication
 //
-//  Created by Yi Zhang on 3/9/19.
+//  Created by Yi Zhang on 5/9/19.
 //  Copyright © 2019 Yi Zhang. All rights reserved.
 //
 
@@ -10,36 +10,41 @@ import UIKit
 import CoreData
 import CoreLocation
 
-class AddLocationViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate {
+class EditLocationViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, UITextViewDelegate {
     
-
-    @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var descTextView: UITextView!
-    @IBOutlet weak var locationTextField: UITextField!
-    @IBOutlet weak var photo: UIImageView!
-    @IBOutlet weak var iconPicker: UIPickerView!
-    var managedObjectContext: NSManagedObjectContext?
-    var coredataController: CoreDataController?
+    var location: LocationAnnotation?
     weak var databaseController: DatabaseProtocol?
-    var newLocation: CLLocationCoordinate2D?
-    var tableViewController: AllLocationTableViewController?
     var mapDelegate: MapDelegate?
+    var managedObjectContext: NSManagedObjectContext?
+    var newLocation: CLLocationCoordinate2D?
     let dataSource = ["beach","church","government","handcuffs","mansion","museum","park","pier","ship","theatre","train-station","train","tree"]
     var icon: String = ""
+
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var descTextView: UITextView!
+    @IBOutlet weak var addressTextField: UITextField!
+    @IBOutlet weak var photo: UIImageView!
+    @IBOutlet weak var iconPicker: UIPickerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
+        if location != nil {
+            nameLabel.text = location!.title
+            descTextView.text = location!.desc
+            addressTextField.text = location!.address
+            //            if default_photo.contains(location!.photo!) {
+            photo.image = UIImage(named: location!.photo!)
+            icon = location!.icon!
+        }
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         databaseController = appDelegate!.databaseController
         managedObjectContext = appDelegate?.persistentContainer.viewContext
         iconPicker.dataSource = self
         iconPicker.delegate = self
-        nameTextField.delegate = self
         descTextView.delegate = self
-        locationTextField.delegate = self
+        addressTextField.delegate = self
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -49,6 +54,41 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    
+    func savePhoto(photeImage: UIImage) -> String {
+        guard let photeImage = photo.image else {
+            displayMessage("Cannot save until a photo has been taken!", "Error")
+            return ""
+        }
+        let date = UInt(Date().timeIntervalSince1970)
+        var data = Data()
+        data = photeImage.jpegData(compressionQuality: 0.8)!
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        if let pathComponent = url.appendingPathComponent("\(date)") {
+            let filePath = pathComponent.path
+            let fileManager = FileManager.default
+            fileManager.createFile(atPath: filePath, contents: data,attributes: nil)
+            //let location = NSEntityDescription.insertNewObject(forEntityName:"Location", into: managedObjectContext!) as! Location
+            //location.photo = "\(date)"
+            do {
+                try //self.managedObjectContext?.save()
+                    displayMessage("Image has been saved!", "Success!")
+                return filePath
+            } catch {
+                displayMessage("Could not save to database", "Error")
+                return ""
+            }
+        }
+        return ""
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[.originalImage] as? UIImage {
+            photo.image = pickedImage
+            dismiss(animated: true, completion: nil)
+        }
     }
     
     @IBAction func takePhoto(_ sender: Any) {
@@ -73,41 +113,6 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
-    func savePhoto(photeImage: UIImage) -> String {
-        guard let photeImage = photo.image else {
-            displayMessage("Cannot save until a photo has been taken!", "Error")
-            return ""
-        }
-        let date = UInt(Date().timeIntervalSince1970)
-        var data = Data()
-        data = photeImage.jpegData(compressionQuality: 0.8)!
-        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0] as String
-        let url = NSURL(fileURLWithPath: path)
-        if let pathComponent = url.appendingPathComponent("\(date)") {
-            let filePath = pathComponent.path
-            let fileManager = FileManager.default
-            fileManager.createFile(atPath: filePath, contents: data,attributes: nil)
-            //let location = NSEntityDescription.insertNewObject(forEntityName:"Location", into: managedObjectContext!) as! Location
-            //location.photo = "\(date)"
-            do {
-                try //self.managedObjectContext?.save()
-                displayMessage("Image has been saved!", "Success!")
-                return filePath
-            } catch {
-                displayMessage("Could not save to database", "Error")
-                return ""
-            }
-        }
-        return ""
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let pickedImage = info[.originalImage] as? UIImage {
-            photo.image = pickedImage
-            dismiss(animated: true, completion: nil)
-        }
-    }
-    
     func getLocation(address:String) {
         let geoCoder:CLGeocoder = CLGeocoder()
         geoCoder.geocodeAddressString(address, completionHandler: {(placemarks,error) -> Void in
@@ -122,16 +127,7 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
             self.newLocation = CLLocationCoordinate2D(latitude: lat, longitude: long)
             
         })
-        
     }
-    
-//    @IBAction func takeIcon(_ sender: Any) {
-//        let controller = UIImagePickerController()
-//        controller.allowsEditing = false
-//        controller.delegate = self
-//        controller.sourceType = .photoLibrary
-//        self.present(controller, animated: true, completion: nil)
-//    }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -146,21 +142,22 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        //let index = dataSource.firstIndex(of: String(self.icon.dropLast(4)))
         return dataSource[row]
     }
     
-    @IBAction func save(_ sender: Any) {
-        let name = nameTextField.text
-        if name == "" {
-            displayMessage("Please enter name!", "Name is empty!")
-            return
-        }
+    @IBAction func saveEdit(_ sender: Any) {
+        let name = nameLabel.text
+//        if name == "" {
+//            displayMessage("Please enter name!", "Name is empty!")
+//            return
+//        }
         let desc = descTextView.text
         if desc == "" {
             displayMessage("Please enter description!", "Description is empty!")
             return
         }
-        let address = locationTextField.text
+        let address = addressTextField.text
         if address == "" {
             displayMessage("Please enter location!", "Location is empty!")
             return
@@ -174,9 +171,8 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
             let photoImage = self.photo.image
             let photo = self.savePhoto(photeImage: photoImage!)
             let icon = self.icon + ".png"
-            let _ = self.databaseController?.addLocation(name: name!, desc: desc!, address: address!, photo: photo, icon: icon, lat: self.newLocation!.latitude, long: self.newLocation!.longitude)
-            let annotation = LocationAnnotation(title: self.nameTextField.text!, address: self.locationTextField.text!, desc: self.descTextView.text!, icon: icon, photo: photo, lat: self.newLocation!.latitude, long: self.newLocation!.longitude)
-            self.mapDelegate!.addAnnotation(annotation: annotation)
+            self.databaseController?.updateLocation(name: name!, desc: desc!, address: address!, photo: photo, icon: icon, lat: self.newLocation!.latitude, long: self.newLocation!.longitude)
+            self.mapDelegate!.reloadAnnotation()
         }
     }
     
@@ -189,11 +185,11 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
         // Pass the selected object to the new view controller.
     }
     */
+    
     func displayMessage(_ message: String,_ title: String) {
         let alertController = UIAlertController(title: title, message: message,preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: .default,handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
-    
-
+        
 }

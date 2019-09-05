@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "Parliament_of_Victoria.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "park.png",
       "scale" : "2x"
     },
     {

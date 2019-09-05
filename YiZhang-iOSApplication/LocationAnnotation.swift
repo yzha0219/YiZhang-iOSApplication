@@ -17,6 +17,7 @@ class LocationAnnotation: NSObject, MKAnnotation {
     var desc: String?
     var icon: String?
     var photo: String?
+    var radius: CLLocationDistance?
     
     init(title: String,address: String,desc: String,icon: String,photo: String,lat: Double,long: Double) {
         self.title = title
@@ -25,5 +26,6 @@ class LocationAnnotation: NSObject, MKAnnotation {
         self.icon = icon
         self.photo = photo
         coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+        self.radius = 500
     }
 }

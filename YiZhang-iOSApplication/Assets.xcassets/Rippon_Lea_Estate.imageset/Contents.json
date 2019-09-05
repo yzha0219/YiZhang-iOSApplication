@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "Rippon_Lea_Estate.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "park.png",
       "scale" : "2x"
     },
     {

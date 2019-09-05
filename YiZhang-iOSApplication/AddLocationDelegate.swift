@@ -17,4 +17,5 @@ protocol MapDelegate: AnyObject {
     func removeAnnotation(annotation: MKAnnotation)
     func addAnnotation(annotation: MKAnnotation)
     func reloadAnnotation()
+    func removeAnnotation(allLocation: [Location])
 }

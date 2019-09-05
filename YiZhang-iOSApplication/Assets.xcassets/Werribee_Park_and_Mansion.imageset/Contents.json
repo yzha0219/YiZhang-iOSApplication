@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "Werribee_Park_and_Mansion.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "park.png",
       "scale" : "2x"
     },
     {

@@ -9,18 +9,18 @@
 import UIKit
 import CoreData
 import CoreLocation
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
     var databaseController: DatabaseProtocol?
     var persistantContainer: NSPersistentContainer?
+    let locationManager = CLLocationManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        
         databaseController = CoreDataController()
         
         persistantContainer = NSPersistentContainer(name: "LocationAnnotation")
@@ -30,7 +30,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 fatalError("Failed to load Core Data stack: \(error)")
             }
         }
+        
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+        
+        let options: UNAuthorizationOptions = [.badge, .sound, .alert]
+        UNUserNotificationCenter.current()
+            .requestAuthorization(options: options) { success, error in
+                if let error = error {
+                    print("Error: \(error)")
+                }
+        }
         return true
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        handleEvent(for: region, eventType: "entered into")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        handleEvent(for: region, eventType: "exited")
+    }
+    
+    func handleEvent(for region: CLRegion!, eventType: String) {
+        // Show an alert if application is active
+        if UIApplication.shared.applicationState == .active {
+            //window?.rootViewController?.showAlert(withTitle: nil, message: message)
+            return
+        } else {
+            // Otherwise present a local notification
+            let body = "You have \(eventType) \(region.identifier)!"
+            let notificationContent = UNMutableNotificationContent()
+            notificationContent.body = body
+            notificationContent.sound = UNNotificationSound.default
+            notificationContent.badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            let request = UNNotificationRequest(identifier: "location_change",
+                                                content: notificationContent,
+                                                trigger: trigger)
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    print("Error: \(error)")
+                }
+            }
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -49,6 +92,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        application.applicationIconBadgeNumber = 0
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

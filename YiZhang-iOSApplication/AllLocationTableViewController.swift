@@ -165,8 +165,6 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
             // Delete the row from the data source
             let location = self.filteredLocation[indexPath.row]
             databaseController!.removeLocation(location: location)
-            //mapDelegate!.reloadAnnotation()
-            //filteredLocation.remove(at: indexPath.row)
         }
         //else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view

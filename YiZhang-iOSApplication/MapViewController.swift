@@ -8,42 +8,94 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
-class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate{
+class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLocationManagerDelegate{
 
     @IBOutlet weak var mapView: MKMapView!
     var allLocationViewController: AllLocationTableViewController?
     var allLocation: [Location] = []
-    //var coreDataController: CoreDataController = CoreDataController()
     var databaseController: DatabaseProtocol?
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+//        // Do any additional setup after loading the view.
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
         self.initialRegion()
         mapView.delegate = self
-        //coreDataController = CoreDataController()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         databaseController = appDelegate.databaseController
         allLocation = databaseController!.fetchAllLocation()
-//        for location in allLocation {
-//            let title = location.name
-//            let lat = location.latitude
-//            let long = location.longtitude
-//            let address = location.address
-//            let desc = location.desc
-//            let icon = location.icon
-//            let photo = location.photo
-//            let annotation = LocationAnnotation(title: title!,address: address!,desc: desc!,icon: icon!,photo: photo!,lat: lat,long: long)
-//            mapView.addAnnotation(annotation)
-//        }
         reloadAnnotation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        mapView.showsUserLocation = (status == .authorizedAlways)
+    }
+    
+    func region(with annotation: LocationAnnotation) -> CLCircularRegion {
+        // 1
+        let region = CLCircularRegion(center: annotation.coordinate,
+                                      radius: 100,
+                                      identifier: annotation.title!)
+        // 2
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+        return region
+    }
+    
+    func startMonitoring(annotation: LocationAnnotation) {
+        // 1
+        if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+            displayMessage(title:"Error", message: "Geofencing is not supported on this device!")
+            return
+        }
+        // 2
+        if CLLocationManager.authorizationStatus() != .authorizedAlways {
+            let message = """
+      Your geotification is saved but will only be activated once you grant
+      Geotify permission to access the device location.
+      """
+             displayMessage(title:"Warning", message: message)
+        }
+        // 3
+        let fenceRegion = region(with: annotation)
+        // 4
+        locationManager.startMonitoring(for: fenceRegion)
+    }
+    
+    func stopMonitoring(annotation: LocationAnnotation) {
+        for region in locationManager.monitoredRegions {
+            guard let circularRegion = region as? CLCircularRegion,
+                circularRegion.identifier == annotation.title else {
+                    continue
+            }
+            locationManager.stopMonitoring(for: circularRegion)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region:
+        CLRegion) {
+        let alert = UIAlertController(title: "Movement Detected!", message: "You have left \(region.identifier)", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style:
+            UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region:
+        CLRegion) {
+        let alert = UIAlertController(title: "Movement Detected!", message: "You have entered into \(region.identifier)", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style:
+            UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func focusOn(annotation: MKAnnotation){
         mapView.selectAnnotation(annotation,animated:true)
-        let zoomRegion = MKCoordinateRegion(center: annotation.coordinate,latitudinalMeters: 2000,longitudinalMeters: 2000)
+        let zoomRegion = MKCoordinateRegion(center: annotation.coordinate,latitudinalMeters: 1000,longitudinalMeters: 1000)
         mapView.setRegion(mapView.regionThatFits(zoomRegion), animated: true)
     }
     
@@ -55,10 +107,38 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate{
         mapView.addAnnotation(annotation)
     }
     
+    func addRadiusOverlay(forGeotification geofence: LocationAnnotation) {
+        mapView?.addOverlay(MKCircle(center: geofence.coordinate, radius: geofence.radius!))
+    }
+    
+    func removeRadiusOverlay(forGeotification geofence: LocationAnnotation) {
+        // Find exactly one overlay which has the same coordinates & radius to remove
+        guard let overlays = mapView?.overlays else { return }
+        for overlay in overlays {
+            guard let circleOverlay = overlay as? MKCircle else { continue }
+            let coord = circleOverlay.coordinate
+            if coord.latitude == geofence.coordinate.latitude && coord.longitude == geofence.coordinate.longitude && circleOverlay.radius == geofence.radius {
+                mapView?.removeOverlay(circleOverlay)
+                break
+            }
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKCircle {
+            let circleRenderer = MKCircleRenderer(overlay: overlay)
+            circleRenderer.lineWidth = 0.5
+            circleRenderer.strokeColor = .red
+            circleRenderer.fillColor = UIColor.cyan.withAlphaComponent(0.4)
+            return circleRenderer
+        }
+        return MKOverlayRenderer(overlay: overlay)
+    }
+    
     func reloadAnnotation() {
         mapView.removeAnnotations(mapView.annotations)
+        removeAnnotation(allLocation: allLocation)
         allLocation = databaseController!.fetchAllLocation()
-        print(allLocation.count)
         for location in allLocation {
             let title = location.name
             let lat = location.latitude
@@ -69,11 +149,30 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate{
             let photo = location.photo
             let annotation = LocationAnnotation(title: title!,address: address!,desc: desc!,icon: icon!,photo: photo!,lat: lat,long: long)
             mapView.addAnnotation(annotation)
+            addRadiusOverlay(forGeotification: annotation)
+            startMonitoring(annotation: annotation)
+        }
+        mapView.register(AnnotationIcon.self,forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+    }
+    
+    func removeAnnotation(allLocation: [Location]) {
+        for location in allLocation {
+            let title = location.name
+            let lat = location.latitude
+            let long = location.longtitude
+            let address = location.address
+            let desc = location.desc
+            let icon = location.icon
+            let photo = location.photo
+            let annotation = LocationAnnotation(title: title!,address: address!,desc: desc!,icon: icon!,photo: photo!,lat: lat,long: long)
+            removeRadiusOverlay(forGeotification: annotation)
+            stopMonitoring(annotation: annotation)
+            
         }
     }
     
     func initialRegion(){
-        let zoomRegion = MKCoordinateRegion(center: CLLocationCoordinate2D.init(latitude: -37.8136, longitude: 144.9631),latitudinalMeters: 2000,longitudinalMeters: 2000)
+        let zoomRegion = MKCoordinateRegion(center: CLLocationCoordinate2D.init(latitude: -37.8136, longitude: 144.9631),latitudinalMeters: 3000,longitudinalMeters: 3000)
         mapView.setRegion(mapView.regionThatFits(zoomRegion), animated: true)
     }
     
@@ -97,6 +196,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate{
             destination.mapDelegate = self
             destination.mapViewController = self
         }
+    }
+    
+    func displayMessage(title: String, message: String) {
+        // Setup an alert to show user details about the Person
+        // UIAlertController manages an alert instance
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertAction.Style.default,handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
 
 }

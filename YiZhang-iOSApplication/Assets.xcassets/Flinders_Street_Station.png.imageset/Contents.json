@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "Flinders_Street_Station.png.jpg",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "park.png",
       "scale" : "2x"
     },
     {

@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "Her_Majesty's_Theatre.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "park.png",
       "scale" : "2x"
     },
     {
