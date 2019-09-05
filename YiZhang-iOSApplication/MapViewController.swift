@@ -9,12 +9,13 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController, MKMapViewDelegate, MapFocusDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate{
 
     @IBOutlet weak var mapView: MKMapView!
     var allLocationViewController: AllLocationTableViewController?
     var allLocation: [Location] = []
-    var coreDataController: CoreDataController = CoreDataController()
+    //var coreDataController: CoreDataController = CoreDataController()
+    var databaseController: DatabaseProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +24,41 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapFocusDelegate {
         self.initialRegion()
         mapView.delegate = self
         //coreDataController = CoreDataController()
-        
-        allLocation = coreDataController.fetchAllLocation()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        databaseController = appDelegate.databaseController
+        allLocation = databaseController!.fetchAllLocation()
+//        for location in allLocation {
+//            let title = location.name
+//            let lat = location.latitude
+//            let long = location.longtitude
+//            let address = location.address
+//            let desc = location.desc
+//            let icon = location.icon
+//            let photo = location.photo
+//            let annotation = LocationAnnotation(title: title!,address: address!,desc: desc!,icon: icon!,photo: photo!,lat: lat,long: long)
+//            mapView.addAnnotation(annotation)
+//        }
+        reloadAnnotation()
+    }
+    
+    func focusOn(annotation: MKAnnotation){
+        mapView.selectAnnotation(annotation,animated:true)
+        let zoomRegion = MKCoordinateRegion(center: annotation.coordinate,latitudinalMeters: 2000,longitudinalMeters: 2000)
+        mapView.setRegion(mapView.regionThatFits(zoomRegion), animated: true)
+    }
+    
+    func removeAnnotation(annotation: MKAnnotation) {
+        mapView.removeAnnotation(annotation)
+    }
+    
+    func addAnnotation(annotation: MKAnnotation) {
+        mapView.addAnnotation(annotation)
+    }
+    
+    func reloadAnnotation() {
+        mapView.removeAnnotations(mapView.annotations)
+        allLocation = databaseController!.fetchAllLocation()
+        print(allLocation.count)
         for location in allLocation {
             let title = location.name
             let lat = location.latitude
@@ -33,15 +67,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapFocusDelegate {
             let desc = location.desc
             let icon = location.icon
             let photo = location.photo
-            let annoation = LocationAnnotation(title: title!,address: address!,desc: desc!,icon: icon!,photo: photo!,lat: lat,long: long)
-            mapView.addAnnotation(annoation)
+            let annotation = LocationAnnotation(title: title!,address: address!,desc: desc!,icon: icon!,photo: photo!,lat: lat,long: long)
+            mapView.addAnnotation(annotation)
         }
-    }
-    
-    func focusOn(annotation: MKAnnotation){
-        mapView.selectAnnotation(annotation,animated:true)
-        let zoomRegion = MKCoordinateRegion(center: annotation.coordinate,latitudinalMeters: 2000,longitudinalMeters: 2000)
-        mapView.setRegion(mapView.regionThatFits(zoomRegion), animated: true)
     }
     
     func initialRegion(){
@@ -62,12 +90,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapFocusDelegate {
         if segue.identifier == "LocationDetailSegue" {
             let destination = segue.destination as! LocationDetailViewController
             destination.location = mapView.selectedAnnotations[0] as? LocationAnnotation
+            destination.mapDelegate = self
         }
         if segue.identifier == "AllLocationSegue" {
             let destination = segue.destination as! AllLocationTableViewController
-            //destination.allLocation = allLocation
-            destination.coreDataController = coreDataController
-            destination.mapfocusDelegate = self
+            destination.mapDelegate = self
             destination.mapViewController = self
         }
     }

@@ -26,9 +26,4 @@ class LocationAnnotation: NSObject, MKAnnotation {
         self.photo = photo
         coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
     }
-    
-    init(title: String, lat: Double, long: Double) {
-        self.title = title
-        coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-    }
 }

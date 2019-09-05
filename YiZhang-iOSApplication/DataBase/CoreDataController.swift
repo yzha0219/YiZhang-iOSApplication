@@ -62,6 +62,46 @@ class CoreDataController: NSObject, DatabaseProtocol,NSFetchedResultsControllerD
         saveContext()
     }
     
+    func updateLocation(name: String, desc: String, address: String, photo: String, icon: String,lat: Double,long: Double) {
+//        let name = location.name
+//        let desc = location.desc
+//        let address = location.address
+//        let photo  = location.photo
+//        let icon = location.icon
+//        let lat = location.latitude
+//        let long = location.longtitude
+        let entity = NSEntityDescription.entity(forEntityName: "Location", in: persistantContainer.viewContext)
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = entity
+        let predicate = NSPredicate(format: "(name = %@)", name)
+        request.predicate = predicate
+        do {
+            let results =
+                try persistantContainer.viewContext.fetch(request)
+            let objectUpdate = results[0] as! NSManagedObject
+            //objectUpdate.setValue(name, forKey: "name")
+            objectUpdate.setValue(desc, forKey: "desc")
+            objectUpdate.setValue(address, forKey: "address")
+            objectUpdate.setValue(photo, forKey: "photo")
+            objectUpdate.setValue(icon, forKey: "icon")
+            objectUpdate.setValue(lat, forKey: "latitude")
+            objectUpdate.setValue(long, forKey: "longtitude")
+            do {
+                try persistantContainer.viewContext.save()
+                //labelStatus.text = "Updated"
+                print("Update")
+            }catch let error as NSError {
+                //labelStatus.text = error.localizedFailureReason
+                print(error.localizedFailureReason!)
+            }
+        }
+        catch let error as NSError {
+            //labelStatus.text = error.localizedFailureReason
+            print(error.localizedFailureReason!)
+        }
+        saveContext()
+    }
+    
     func addListener(listener: DatabaseListener) {
         listeners.addDelegate(listener)
         listener.onLocationListChange(change: .update, location: fetchAllLocation())
@@ -139,6 +179,4 @@ class CoreDataController: NSObject, DatabaseProtocol,NSFetchedResultsControllerD
         }
         return image
     }
-
-
 }

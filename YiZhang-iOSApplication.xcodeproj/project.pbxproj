@@ -16,6 +16,7 @@
 		461D66EB231A96DA00FB1659 /* NewLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66EA231A96DA00FB1659 /* NewLocationViewController.swift */; };
 		461D66ED231A98F800FB1659 /* LocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66EC231A98F800FB1659 /* LocationAnnotation.swift */; };
 		462A132B231D8A670074969B /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462A132A231D8A670074969B /* AddLocationViewController.swift */; };
+		462A132D2320CD990074969B /* EditLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462A132C2320CD990074969B /* EditLocationViewController.swift */; };
 		4641A54923094DBD00007E7D /* MapViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4641A54823094DBD00007E7D /* MapViewController2.swift */; };
 		46721A612319422100216768 /* LocationAnnotation.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 46721A5F2319422100216768 /* LocationAnnotation.xcdatamodeld */; };
 		46721A672319451000216768 /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46721A662319451000216768 /* DatabaseProtocol.swift */; };
@@ -38,6 +39,7 @@
 		461D66EA231A96DA00FB1659 /* NewLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLocationViewController.swift; sourceTree = "<group>"; };
 		461D66EC231A98F800FB1659 /* LocationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAnnotation.swift; sourceTree = "<group>"; };
 		462A132A231D8A670074969B /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
+		462A132C2320CD990074969B /* EditLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationViewController.swift; sourceTree = "<group>"; };
 		4641A54823094DBD00007E7D /* MapViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController2.swift; sourceTree = "<group>"; };
 		46721A602319422100216768 /* LocationAnnotation.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationAnnotation.xcdatamodel; sourceTree = "<group>"; };
 		46721A662319451000216768 /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				461D66EA231A96DA00FB1659 /* NewLocationViewController.swift */,
 				461D66EC231A98F800FB1659 /* LocationAnnotation.swift */,
 				462A132A231D8A670074969B /* AddLocationViewController.swift */,
+				462A132C2320CD990074969B /* EditLocationViewController.swift */,
 			);
 			path = "YiZhang-iOSApplication";
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				462A132B231D8A670074969B /* AddLocationViewController.swift in Sources */,
 				46F9941B231570750037DD8C /* MapViewController.swift in Sources */,
 				46721A612319422100216768 /* LocationAnnotation.xcdatamodeld in Sources */,
+				462A132D2320CD990074969B /* EditLocationViewController.swift in Sources */,
 				461D66DF231A197D00FB1659 /* LocationDetailViewController.swift in Sources */,
 				461D66CC231964FE00FB1659 /* MulticastDelegate.swift in Sources */,
 			);

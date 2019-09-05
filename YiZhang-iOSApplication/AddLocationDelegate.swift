@@ -12,6 +12,9 @@ protocol AddLocationDelegate {
     func addLocation(location: Location) -> Bool
 }
 
-protocol MapFocusDelegate: AnyObject {
+protocol MapDelegate: AnyObject {
     func focusOn(annotation: MKAnnotation)
+    func removeAnnotation(annotation: MKAnnotation)
+    func addAnnotation(annotation: MKAnnotation)
+    func reloadAnnotation()
 }

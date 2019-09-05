@@ -15,12 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var databaseController: DatabaseProtocol?
-    //var persistantContainer: NSPersistentContainer?
+    var persistantContainer: NSPersistentContainer?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        /*
+        
         databaseController = CoreDataController()
         
         persistantContainer = NSPersistentContainer(name: "LocationAnnotation")
@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 fatalError("Failed to load Core Data stack: \(error)")
             }
         }
- */
         return true
     }
 
