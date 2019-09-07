@@ -42,11 +42,13 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
         locationTextField.delegate = self
     }
     
+    //Close the keyboard when user press return
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
+    //Close the keyboard when user touch blank area
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -55,6 +57,7 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
         let controller = UIImagePickerController()
         controller.allowsEditing = false
         controller.delegate = self
+        //Display the alert to ask the user whether they want to take the phote from photo library or camera
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let alert = UIAlertController(title: "Photo Source", message: "Choose where you want to get the phote.", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Camera", style: .default){(action: UIAlertAction!) in
@@ -73,6 +76,7 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
+    //Save photo to the phote
     func savePhoto(photeImage: UIImage) -> String {
         guard let photeImage = photo.image else {
             displayMessage("Cannot save until a photo has been taken!", "Error")
@@ -101,6 +105,7 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
         return ""
     }
     
+    //Display the photo user picked
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[.originalImage] as? UIImage {
             photo.image = pickedImage
@@ -108,6 +113,7 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
+    //Get the latitude and longtitude by the address
     func getLocation(address:String) {
         let geoCoder:CLGeocoder = CLGeocoder()
         geoCoder.geocodeAddressString(address, completionHandler: {(placemarks,error) -> Void in
@@ -124,14 +130,6 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
         })
         
     }
-    
-//    @IBAction func takeIcon(_ sender: Any) {
-//        let controller = UIImagePickerController()
-//        controller.allowsEditing = false
-//        controller.delegate = self
-//        controller.sourceType = .photoLibrary
-//        self.present(controller, animated: true, completion: nil)
-//    }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -150,6 +148,7 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     @IBAction func save(_ sender: Any) {
+        //Add validation of users' iuput
         let name = nameTextField.text
         if name == "" {
             displayMessage("Please enter name!", "Name is empty!")
@@ -166,6 +165,7 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
             return
         }
         getLocation(address: address!)
+        //Wait 2 seconds for the completition of running geoLocation
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
             if self.newLocation == nil {
                 self.displayMessage("Please enter a valid location!", "Location is invalid! We can't find the input address on the map!")
@@ -189,6 +189,8 @@ class AddLocationViewController: UIViewController, UIImagePickerControllerDelega
         // Pass the selected object to the new view controller.
     }
     */
+    
+    //Display the alert with customized information.
     func displayMessage(_ message: String,_ title: String) {
         let alertController = UIAlertController(title: title, message: message,preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: .default,handler: nil))

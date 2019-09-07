@@ -15,6 +15,7 @@ class EditLocationViewController: UIViewController, UIImagePickerControllerDeleg
     var location: LocationAnnotation?
     weak var databaseController: DatabaseProtocol?
     var mapDelegate: MapDelegate?
+    var detailDelegate: DetailDelegate?
     var managedObjectContext: NSManagedObjectContext?
     var newLocation: CLLocationCoordinate2D?
     let dataSource = ["beach","church","government","handcuffs","mansion","museum","park","pier","ship","theatre","train-station","train","tree"]
@@ -47,15 +48,18 @@ class EditLocationViewController: UIViewController, UIImagePickerControllerDeleg
         addressTextField.delegate = self
     }
     
+    //Close the keyboard when user press return
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
+    //Close the keyboard when user touch blank area
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
+    //Save photo to the phote
     func savePhoto(photeImage: UIImage) -> String {
         guard let photeImage = photo.image else {
             displayMessage("Cannot save until a photo has been taken!", "Error")
@@ -84,6 +88,7 @@ class EditLocationViewController: UIViewController, UIImagePickerControllerDeleg
         return ""
     }
     
+    //Display the photo user picked
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[.originalImage] as? UIImage {
             photo.image = pickedImage
@@ -96,6 +101,7 @@ class EditLocationViewController: UIViewController, UIImagePickerControllerDeleg
         controller.allowsEditing = false
         controller.delegate = self
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            //Display the alert to ask the user whether they want to take the phote from photo library or camera
             let alert = UIAlertController(title: "Photo Source", message: "Choose where you want to get the phote.", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Camera", style: .default){(action: UIAlertAction!) in
                 controller.sourceType = .camera
@@ -113,6 +119,7 @@ class EditLocationViewController: UIViewController, UIImagePickerControllerDeleg
         }
     }
     
+    //Get the latitude and longtitude by the address
     func getLocation(address:String) {
         let geoCoder:CLGeocoder = CLGeocoder()
         geoCoder.geocodeAddressString(address, completionHandler: {(placemarks,error) -> Void in
@@ -142,17 +149,13 @@ class EditLocationViewController: UIViewController, UIImagePickerControllerDeleg
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        //let index = dataSource.firstIndex(of: String(self.icon.dropLast(4)))
         return dataSource[row]
     }
     
     @IBAction func saveEdit(_ sender: Any) {
         let name = nameLabel.text
-//        if name == "" {
-//            displayMessage("Please enter name!", "Name is empty!")
-//            return
-//        }
         let desc = descTextView.text
+        //Add validation of users' iuput
         if desc == "" {
             displayMessage("Please enter description!", "Description is empty!")
             return
@@ -163,6 +166,7 @@ class EditLocationViewController: UIViewController, UIImagePickerControllerDeleg
             return
         }
         getLocation(address: address!)
+        //Wait 2 seconds for the completition of running geoLocation
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
             if self.newLocation == nil {
                 self.displayMessage("Please enter a valid location!", "Location is invalid! We can't find the input address on the map!")
@@ -173,6 +177,7 @@ class EditLocationViewController: UIViewController, UIImagePickerControllerDeleg
             let icon = self.icon + ".png"
             self.databaseController?.updateLocation(name: name!, desc: desc!, address: address!, photo: photo, icon: icon, lat: self.newLocation!.latitude, long: self.newLocation!.longitude)
             self.mapDelegate!.reloadAnnotation()
+            self.detailDelegate!.refreshLocation(name: name!, desc: desc!, address: address!, photo: photo, icon: icon)
         }
     }
     
@@ -186,6 +191,7 @@ class EditLocationViewController: UIViewController, UIImagePickerControllerDeleg
     }
     */
     
+    //Display the alert with customized information.
     func displayMessage(_ message: String,_ title: String) {
         let alertController = UIAlertController(title: title, message: message,preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: .default,handler: nil))

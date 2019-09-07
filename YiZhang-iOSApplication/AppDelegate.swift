@@ -4,6 +4,14 @@
 //
 //  Created by Yi Zhang on 14/8/19.
 //  Copyright © 2019 Yi Zhang. All rights reserved.
+/// Copyright (c) 2018 Razeware LLC
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
 //
 
 import UIKit
@@ -32,8 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         
         locationManager.delegate = self
+        //Request authorization of location service
         locationManager.requestAlwaysAuthorization()
-        
+        //Request authorization of background notification
         let options: UNAuthorizationOptions = [.badge, .sound, .alert]
         UNUserNotificationCenter.current()
             .requestAuthorization(options: options) { success, error in
@@ -44,14 +53,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return true
     }
     
+    //Listen to the action of enter into the geofence
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         handleEvent(for: region, eventType: "entered into")
     }
     
+    //Listen to the action of exit the geofence
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         handleEvent(for: region, eventType: "exited")
     }
     
+    //Trigger the notification
     func handleEvent(for region: CLRegion!, eventType: String) {
         // Show an alert if application is active
         if UIApplication.shared.applicationState == .active {

@@ -21,7 +21,6 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
     var allLocation: [Location] = []
     var filteredLocation: [Location] = []
     var locationDelegate: AddLocationDelegate?
-    //var coreDataController : CoreDataController?
     weak var mapDelegate: MapDelegate?
     weak var databaseController: DatabaseProtocol?
     var mapViewController: MapViewController?
@@ -50,7 +49,7 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
         definesPresentationContext = true
     }
     
-    
+    //Sort the table view with segment controller
     @IBAction func sortOption(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
             //ascending
@@ -77,6 +76,7 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
         databaseController?.removeListener(listener: self)
     }
     
+    //Listen to the content change of core data
     func onLocationListChange(change: DatabaseChange, location: [Location]) {
         allLocation = location
         mapDelegate!.reloadAnnotation()
@@ -197,13 +197,11 @@ class AllLocationTableViewController: UITableViewController, UISearchResultsUpda
         // Pass the selected object to the new view controller.
         if segue.identifier == "addLocationSegue" {
             let destination = segue.destination as! AddLocationViewController
-            //destination.coredataController = coreDataController
             destination.mapDelegate = mapDelegate
-            //destination.tableViewController = self
         }
     }
     
-
+    //Display the alert with customized information.
     func displayMessage(title: String, message: String) {
         // Setup an alert to show user details about the Person
         // UIAlertController manages an alert instance

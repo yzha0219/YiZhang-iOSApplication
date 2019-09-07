@@ -18,6 +18,8 @@ class AnnotationIcon: MKAnnotationView {
         // Drawing code
     }
     */
+    
+    //Customiza the icon of each annotation on the map
     override var annotation: MKAnnotation? {
         willSet {
             guard let annotation = newValue as? LocationAnnotation else {return}

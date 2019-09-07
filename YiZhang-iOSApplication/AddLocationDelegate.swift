@@ -19,3 +19,7 @@ protocol MapDelegate: AnyObject {
     func reloadAnnotation()
     func removeAnnotation(allLocation: [Location])
 }
+
+protocol DetailDelegate: AnyObject {
+    func refreshLocation(name: String, desc: String, address: String, photo: String, icon: String)
+}

@@ -4,6 +4,14 @@
 //
 //  Created by Yi Zhang on 28/8/19.
 //  Copyright © 2019 Yi Zhang. All rights reserved.
+/// Copyright (c) 2018 Razeware LLC
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
 //
 
 import UIKit
@@ -36,6 +44,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLoc
         mapView.showsUserLocation = (status == .authorizedAlways)
     }
     
+    
+    //Create genfence
     func region(with annotation: LocationAnnotation) -> CLCircularRegion {
         // 1
         let region = CLCircularRegion(center: annotation.coordinate,
@@ -47,6 +57,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLoc
         return region
     }
     
+    //Start monitoring whether the user enter into exit the geofence
     func startMonitoring(annotation: LocationAnnotation) {
         // 1
         if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
@@ -67,6 +78,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLoc
         locationManager.startMonitoring(for: fenceRegion)
     }
     
+    //Stop monitoring
     func stopMonitoring(annotation: LocationAnnotation) {
         for region in locationManager.monitoredRegions {
             guard let circularRegion = region as? CLCircularRegion,
@@ -77,6 +89,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLoc
         }
     }
     
+    ////Listen to the action of enter into the geofence
     func locationManager(_ manager: CLLocationManager, didExitRegion region:
         CLRegion) {
         let alert = UIAlertController(title: "Movement Detected!", message: "You have left \(region.identifier)", preferredStyle: UIAlertController.Style.alert)
@@ -84,7 +97,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLoc
             UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
+    ////Listen to the action of exit the geofence
     func locationManager(_ manager: CLLocationManager, didEnterRegion region:
         CLRegion) {
         let alert = UIAlertController(title: "Movement Detected!", message: "You have entered into \(region.identifier)", preferredStyle: UIAlertController.Style.alert)
@@ -93,6 +106,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLoc
         self.present(alert, animated: true, completion: nil)
     }
     
+    //Focus the map on a specific region
     func focusOn(annotation: MKAnnotation){
         mapView.selectAnnotation(annotation,animated:true)
         let zoomRegion = MKCoordinateRegion(center: annotation.coordinate,latitudinalMeters: 1000,longitudinalMeters: 1000)
@@ -107,10 +121,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLoc
         mapView.addAnnotation(annotation)
     }
     
+    //Draw geofence on the map view
     func addRadiusOverlay(forGeotification geofence: LocationAnnotation) {
         mapView?.addOverlay(MKCircle(center: geofence.coordinate, radius: geofence.radius!))
     }
     
+    //Erase geofence on the map view
     func removeRadiusOverlay(forGeotification geofence: LocationAnnotation) {
         // Find exactly one overlay which has the same coordinates & radius to remove
         guard let overlays = mapView?.overlays else { return }
@@ -124,6 +140,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLoc
         }
     }
     
+    //Customize the style of genfence
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKCircle {
             let circleRenderer = MKCircleRenderer(overlay: overlay)
@@ -198,6 +215,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, MapDelegate, CLLoc
         }
     }
     
+    //Display the alert with customized information.
     func displayMessage(title: String, message: String) {
         // Setup an alert to show user details about the Person
         // UIAlertController manages an alert instance

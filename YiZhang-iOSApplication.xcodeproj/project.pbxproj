@@ -16,8 +16,8 @@
 		461D66ED231A98F800FB1659 /* LocationAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461D66EC231A98F800FB1659 /* LocationAnnotation.swift */; };
 		462A132B231D8A670074969B /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462A132A231D8A670074969B /* AddLocationViewController.swift */; };
 		462A132D2320CD990074969B /* EditLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462A132C2320CD990074969B /* EditLocationViewController.swift */; };
-		462A132F23215E700074969B /* Melbourne Musem.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 462A132E23215E700074969B /* Melbourne Musem.gpx */; };
 		462A133323218C5F0074969B /* AnnotationIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462A133223218C5F0074969B /* AnnotationIcon.swift */; };
+		462A13352322720D0074969B /* Launch_Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = 462A13342322720D0074969B /* Launch_Screen.png */; };
 		46721A612319422100216768 /* LocationAnnotation.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 46721A5F2319422100216768 /* LocationAnnotation.xcdatamodeld */; };
 		46721A672319451000216768 /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46721A662319451000216768 /* DatabaseProtocol.swift */; };
 		46E38FBF23043180004F4BD0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E38FBE23043180004F4BD0 /* AppDelegate.swift */; };
@@ -39,8 +39,8 @@
 		461D66EC231A98F800FB1659 /* LocationAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAnnotation.swift; sourceTree = "<group>"; };
 		462A132A231D8A670074969B /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
 		462A132C2320CD990074969B /* EditLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationViewController.swift; sourceTree = "<group>"; };
-		462A132E23215E700074969B /* Melbourne Musem.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Melbourne Musem.gpx"; path = "../../../../../../Downloads/Melbourne Musem.gpx"; sourceTree = "<group>"; };
 		462A133223218C5F0074969B /* AnnotationIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationIcon.swift; sourceTree = "<group>"; };
+		462A13342322720D0074969B /* Launch_Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Launch_Screen.png; sourceTree = "<group>"; };
 		46721A602319422100216768 /* LocationAnnotation.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocationAnnotation.xcdatamodel; sourceTree = "<group>"; };
 		46721A662319451000216768 /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
 		46E38FBB23043180004F4BD0 /* YiZhang-iOSApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "YiZhang-iOSApplication.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,7 +104,7 @@
 		46E38FBD23043180004F4BD0 /* YiZhang-iOSApplication */ = {
 			isa = PBXGroup;
 			children = (
-				462A132E23215E700074969B /* Melbourne Musem.gpx */,
+				462A13342322720D0074969B /* Launch_Screen.png */,
 				4641A55F230996DC00007E7D /* Database */,
 				4641A54F2309907A00007E7D /* DataModel */,
 				46E38FBE23043180004F4BD0 /* AppDelegate.swift */,
@@ -184,7 +184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46E38FCC23043180004F4BD0 /* LaunchScreen.storyboard in Resources */,
-				462A132F23215E700074969B /* Melbourne Musem.gpx in Resources */,
+				462A13352322720D0074969B /* Launch_Screen.png in Resources */,
 				46E38FC923043180004F4BD0 /* Assets.xcassets in Resources */,
 				46E38FC423043180004F4BD0 /* Main.storyboard in Resources */,
 			);

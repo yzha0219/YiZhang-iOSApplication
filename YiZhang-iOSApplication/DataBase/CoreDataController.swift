@@ -33,6 +33,7 @@ class CoreDataController: NSObject, DatabaseProtocol,NSFetchedResultsControllerD
         }
     }
     
+    //Save change to core data
     func saveContext(){
         if persistantContainer.viewContext.hasChanges{
             do {
@@ -43,9 +44,9 @@ class CoreDataController: NSObject, DatabaseProtocol,NSFetchedResultsControllerD
         }
     }
     
+    //Add Location to core data
     func addLocation(name: String, desc: String, address: String, photo: String, icon: String,lat: Double,long: Double) -> Location {
         let location = NSEntityDescription.insertNewObject(forEntityName: "Location", into: persistantContainer.viewContext) as! Location
-        print(persistantContainer.viewContext)
         location.name = name
         location.desc = desc
         location.address = address
@@ -57,19 +58,14 @@ class CoreDataController: NSObject, DatabaseProtocol,NSFetchedResultsControllerD
         return location
     }
     
+    //Remove Location from core data
     func removeLocation(location: Location) {
         persistantContainer.viewContext.delete(location)
         saveContext()
     }
     
+    //Updata Location in core data
     func updateLocation(name: String, desc: String, address: String, photo: String, icon: String,lat: Double,long: Double) {
-//        let name = location.name
-//        let desc = location.desc
-//        let address = location.address
-//        let photo  = location.photo
-//        let icon = location.icon
-//        let lat = location.latitude
-//        let long = location.longtitude
         let entity = NSEntityDescription.entity(forEntityName: "Location", in: persistantContainer.viewContext)
         let request = NSFetchRequest<NSFetchRequestResult>()
         request.entity = entity
@@ -184,7 +180,6 @@ class CoreDataController: NSObject, DatabaseProtocol,NSFetchedResultsControllerD
         var image: UIImage?
         if let pathComponent = url.appendingPathComponent(fileName) {
             let filePath = pathComponent.path
-            print(filePath)
             let fileManager = FileManager.default
             let fileData = fileManager.contents(atPath: filePath)
             image = UIImage(data: fileData!)

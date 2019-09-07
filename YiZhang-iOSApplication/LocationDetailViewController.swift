@@ -8,11 +8,10 @@
 
 import UIKit
 
-class LocationDetailViewController: UIViewController {
+class LocationDetailViewController: UIViewController, DetailDelegate {
 
     var location: LocationAnnotation?
     var mapDelegate: MapDelegate?
-    //let default_photo = ["Brighton_Beach_Boxes.png","Melbourne_Museum.png","Werribee Park and Mansion.png"]
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var descTextView: UITextView!
@@ -28,13 +27,18 @@ class LocationDetailViewController: UIViewController {
             nameLabel.text = location!.title
             descTextView.text = location!.desc
             locationLabel.text = location!.address
-//            if default_photo.contains(location!.photo!) {
             photo.image = UIImage(named: location!.photo!)
-//            } else {
-//                photo.image = loadImageData(fileName: location!.photo!)
-//            }
             icon.image = UIImage(named: location!.icon!)
         }
+    }
+    
+    //Refresh the detail of location after update the content of core data
+    func refreshLocation(name: String, desc: String, address: String, photo: String, icon: String) {
+        nameLabel.text = name
+        descTextView.text = desc
+        locationLabel.text = address
+        self.photo.image = UIImage(named: photo)
+        self.icon.image = UIImage(named: icon)
     }
     
     
@@ -50,6 +54,7 @@ class LocationDetailViewController: UIViewController {
             let destination = segue.destination as! EditLocationViewController
             destination.location = location
             destination.mapDelegate = mapDelegate
+            destination.detailDelegate = self
         }
     }
     
